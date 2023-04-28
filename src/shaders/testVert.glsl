@@ -49,7 +49,7 @@ float noise(vec3 p){
 }
 
 float sampleHeight(vec3 pos){
-    float heightOffset=noise(5.*pos);
+    float heightOffset=noise(2.*pos)+.5*noise(4.*pos)+.25*noise(8.*pos)+.125*noise(16.*pos)+.0625*noise(32.*pos);
     return.1*heightOffset;
 }
 

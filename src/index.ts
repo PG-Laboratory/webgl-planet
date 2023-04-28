@@ -35,7 +35,7 @@ const material = new THREE.ShaderMaterial({
 });
 
 // const geometry = new THREE.SphereGeometry(1, 100, 100);
-const geometry = new THREE.IcosahedronGeometry(1, 55);
+const geometry = new THREE.IcosahedronGeometry(1, 100);
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 
@@ -43,7 +43,7 @@ scene.add(sphere);
 const controls = new OrbitControls(camera, renderer.domElement);
 // controls.autoRotate = true;
 controls.enableDamping = true;
-controls.minDistance = 1;
+controls.minDistance = 2;
 controls.maxDistance = 10;
 camera.position.z = 3;
 
@@ -52,11 +52,6 @@ controls.update();
 // Stars
 const sky = (function () {
   const geometry = new THREE.IcosahedronGeometry(30, 1);
-  // const geometry = new THREE.BoxGeometry(100, 100, 100);
-  // const material = new THREE.MeshBasicMaterial({
-  //   color: '#9f6f1f',
-  //   side: THREE.BackSide,
-  // });
   const material = new THREE.ShaderMaterial({
     uniforms: {
       time: { value: 0.0 }, // TODO Fix time; now works but is it done correctly?
@@ -109,6 +104,3 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
-
-// TODO
-// How does frustum culling work?
