@@ -13,6 +13,9 @@ application.addSceneObject(terrain);
 application.addSceneObject(water);
 application.start();
 
+//@ts-ignore
+document.getElementsByClassName('loading-screen')[0].style.opacity = 0;
+
 // addSlider({
 //   parentId: 'camera-setting',
 //   value: defaultConfig.test.speed,
