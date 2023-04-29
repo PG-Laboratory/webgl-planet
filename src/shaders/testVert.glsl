@@ -1,5 +1,6 @@
 uniform float time;
 uniform vec2 resolution;
+uniform float heightOffsetScale;
 
 out vec3 outPosition;
 out vec3 outNormal;
@@ -16,7 +17,7 @@ out vec2 uvInterpolated;
 
 float sampleHeight(vec3 pos){
     float heightOffset=snoise(2.*pos)+.5*snoise(4.*pos)+.25*snoise(8.*pos)+.125*snoise(16.*pos)+.0625*snoise(32.*pos);
-    return .03*heightOffset;
+    return heightOffsetScale*heightOffset;
 }
 
 void main(){
