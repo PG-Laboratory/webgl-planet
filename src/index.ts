@@ -2,6 +2,8 @@ import { Sky } from './sky/Sky';
 import { Application } from './Application';
 import { Terrain } from './terrain/Terrain';
 import { Water } from './water/Water';
+import { activeConfig } from './config';
+import { addSlider } from './gui';
 
 const sky = new Sky();
 const terrain = new Terrain();
@@ -16,14 +18,33 @@ application.start();
 //@ts-ignore
 document.getElementsByClassName('loading-screen')[0].style.opacity = 0;
 
-// addSlider({
-//   parentId: 'camera-setting',
-//   value: defaultConfig.test.speed,
-//   label: 'Testing speed',
-//   min: 0,
-//   max: 0.1,
-//   onChange: (newVal) => (defaultConfig.test.speed = newVal),
-// });
+addSlider({
+  parentId: 'terrain-setting',
+  value: activeConfig.terrain.offsetScale,
+  label: 'Offset scale',
+  min: 0.001,
+  max: 0.3,
+  onChange: (newVal: number) => (activeConfig.terrain.offsetScale = newVal),
+});
+
+addSlider({
+  parentId: 'terrain-setting',
+  value: activeConfig.terrain.numOctaves,
+  label: 'Number of octaves',
+  min: 1,
+  max: 10,
+  onChange: (newVal: number) => (activeConfig.terrain.numOctaves = newVal),
+  isDiscrete: true,
+});
+
+addSlider({
+  parentId: 'terrain-setting',
+  value: activeConfig.terrain.baseFreq,
+  label: 'Fundamental frequency',
+  min: 0.5,
+  max: 10,
+  onChange: (newVal: number) => (activeConfig.terrain.baseFreq = newVal),
+});
 
 // addSlider({
 //   parentId: 'camera-setting',

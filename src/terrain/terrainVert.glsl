@@ -1,6 +1,8 @@
 uniform float time;
 uniform vec2 resolution;
 uniform float heightOffsetScale;
+uniform float baseFreq;
+uniform int numOctaves;
 
 out vec3 outPosition;
 out vec3 outNormal;
@@ -18,7 +20,14 @@ out vec2 uvInterpolated;
 // attribute vec2 uv;
 
 float sampleHeight(vec3 pos){
-    float heightOffset=snoise(2.*pos)+.5*snoise(4.*pos)+.25*snoise(8.*pos)+.125*snoise(16.*pos)+.0625*snoise(32.*pos);
+    float heightOffset=0.;
+    float amp=1.;
+    float freq=baseFreq;
+    for(int i=0;i<numOctaves;++i){
+        heightOffset+=amp*snoise(freq*pos);
+        amp*=.5;
+        freq*=2.;
+    }
     return heightOffsetScale*heightOffset;
 }
 
