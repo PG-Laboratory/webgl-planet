@@ -28,7 +28,7 @@ export default {
         /* ... */
     },
     devOptions: {
-        /* ... */
+        open: 'chrome',
     },
     buildOptions: {
         /* ... */

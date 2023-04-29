@@ -11,10 +11,12 @@
 //
 
 vec4 mod289(vec4 x){
-return x-floor(x*(1./289.))*289.;}
+    return x-floor(x*(1./289.))*289.;
+}
 
 float mod289(float x){
-return x-floor(x*(1./289.))*289.;}
+    return x-floor(x*(1./289.))*289.;
+}
 
 vec4 permute(vec4 x){
     return mod289(((x*34.)+10.)*x);
@@ -24,18 +26,15 @@ float permute(float x){
     return mod289(((x*34.)+10.)*x);
 }
 
-vec4 taylorInvSqrt(vec4 r)
-{
+vec4 taylorInvSqrt(vec4 r){
     return 1.79284291400159-.85373472095314*r;
 }
 
-float taylorInvSqrt(float r)
-{
+float taylorInvSqrt(float r){
     return 1.79284291400159-.85373472095314*r;
 }
 
-vec4 grad4(float j,vec4 ip)
-{
+vec4 grad4(float j,vec4 ip){
     const vec4 ones=vec4(1.,1.,1.,-1.);
     vec4 p,s;
     
@@ -50,8 +49,7 @@ vec4 grad4(float j,vec4 ip)
 // (sqrt(5) - 1)/4 = F4, used once below
 #define F4.309016994374947451
 
-float snoise(vec4 v)
-{
+float snoise(vec4 v){
     const vec4 C=vec4(.138196601125011,// (5 - sqrt(5))/20  G4
     .276393202250021,// 2 * G4
     .414589803375032,// 3 * G4
@@ -94,36 +92,33 @@ vec4 x4=x0+C.wwww;
 // Permutations
 i=mod289(i);
 float j0=permute(permute(permute(permute(i.w)+i.z)+i.y)+i.x);
-vec4 j1=permute(permute(permute(permute(
-                i.w+vec4(i1.w,i2.w,i3.w,1.))
-                +i.z+vec4(i1.z,i2.z,i3.z,1.))
-                +i.y+vec4(i1.y,i2.y,i3.y,1.))
-                +i.x+vec4(i1.x,i2.x,i3.x,1.));
-                
-                // Gradients: 7x7x6 points over a cube, mapped onto a 4-cross polytope
-                // 7*7*6 = 294, which is close to the ring size 17*17 = 289.
-                vec4 ip=vec4(1./294.,1./49.,1./7.,0.);
-                
-                vec4 p0=grad4(j0,ip);
-                vec4 p1=grad4(j1.x,ip);
-                vec4 p2=grad4(j1.y,ip);
-                vec4 p3=grad4(j1.z,ip);
-                vec4 p4=grad4(j1.w,ip);
-                
-                // Normalise gradients
-                vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
-                p0*=norm.x;
-                p1*=norm.y;
-                p2*=norm.z;
-                p3*=norm.w;
-                p4*=taylorInvSqrt(dot(p4,p4));
-                
-                // Mix contributions from the five corners
-                vec3 m0=max(.6-vec3(dot(x0,x0),dot(x1,x1),dot(x2,x2)),0.);
-                vec2 m1=max(.6-vec2(dot(x3,x3),dot(x4,x4)),0.);
-                m0=m0*m0;
-                m1=m1*m1;
-                return 49.*(dot(m0*m0,vec3(dot(p0,x0),dot(p1,x1),dot(p2,x2)))
-                +dot(m1*m1,vec2(dot(p3,x3),dot(p4,x4))));
-                
-            }
+vec4 j1=permute(permute(permute(permute(i.w+vec4(i1.w,i2.w,i3.w,1.))+i.z+vec4(i1.z,i2.z,i3.z,1.))+i.y+vec4(i1.y,i2.y,i3.y,1.))+i.x+vec4(i1.x,i2.x,i3.x,1.));
+
+// Gradients: 7x7x6 points over a cube, mapped onto a 4-cross polytope
+// 7*7*6 = 294, which is close to the ring size 17*17 = 289.
+vec4 ip=vec4(1./294.,1./49.,1./7.,0.);
+
+vec4 p0=grad4(j0,ip);
+vec4 p1=grad4(j1.x,ip);
+vec4 p2=grad4(j1.y,ip);
+vec4 p3=grad4(j1.z,ip);
+vec4 p4=grad4(j1.w,ip);
+
+// Normalise gradients
+vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+p0*=norm.x;
+p1*=norm.y;
+p2*=norm.z;
+p3*=norm.w;
+p4*=taylorInvSqrt(dot(p4,p4));
+
+// Mix contributions from the five corners
+vec3 m0=max(.6-vec3(dot(x0,x0),dot(x1,x1),dot(x2,x2)),0.);
+vec2 m1=max(.6-vec2(dot(x3,x3),dot(x4,x4)),0.);
+m0=m0*m0;
+m1=m1*m1;
+return 49.*(dot(m0*m0,vec3(dot(p0,x0),dot(p1,x1),dot(p2,x2)))+dot(m1*m1,vec2(dot(p3,x3),dot(p4,x4))));
+
+}
+
+#pragma glslify:export(snoise)

@@ -1,13 +1,16 @@
 import { Sky } from './sky/Sky';
 import { Application } from './Application';
 import { Terrain } from './terrain/Terrain';
+import { Water } from './water/Water';
 
 const sky = new Sky();
 const terrain = new Terrain();
+const water = new Water();
 
 const application = new Application();
 application.addSceneObject(sky);
 application.addSceneObject(terrain);
+application.addSceneObject(water);
 application.start();
 
 // addSlider({
