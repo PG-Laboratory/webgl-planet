@@ -1,4 +1,6 @@
-# New Project
+# Procedural Planet
+
+GLSL Noise functions are borrowed from <https://github.com/stegu/webgl-noise>
 
 > ✨ Bootstrapped with Create Snowpack App (CSA).
 >
