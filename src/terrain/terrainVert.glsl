@@ -27,7 +27,6 @@ float sampleHeight(vec3 pos){
         freq*=2.;
     }
     return heightOffsetScale*((useExponentiation)?exp(heightOffset):heightOffset);
-    // return heightOffsetScale * exp(heightOffset);
 }
 
 void main(){
