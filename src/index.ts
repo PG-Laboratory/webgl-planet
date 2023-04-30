@@ -4,15 +4,18 @@ import { Terrain } from './terrain/Terrain';
 import { Water } from './water/Water';
 import { activeConfig } from './config';
 import { addSlider, addSwitch } from './gui';
+import { Clouds } from './clouds/Clouds';
 
 const sky = new Sky();
 const terrain = new Terrain();
 const water = new Water();
+const clouds = new Clouds();
 
 const application = new Application();
 application.addSceneObject(sky);
 application.addSceneObject(terrain);
 application.addSceneObject(water);
+application.addSceneObject(clouds);
 application.start();
 
 //@ts-ignore
