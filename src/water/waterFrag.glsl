@@ -7,7 +7,7 @@ in vec3 vertWorldPos;
 
 #pragma glslify:psrdnoise=require(./../commonShader/psrdnoise3-min.glsl)
 
-vec3 objColor=vec3(.06,.41,1);
+vec3 objColor=vec3(.07,.55,.85);
 
 #if NUM_DIR_LIGHTS>0
 struct DirectionalLight{
@@ -47,5 +47,5 @@ void main(){
     vec3 newNormal=normalize(outNormal-displaceAmount*gradientProjOnTangentPlane);
     
     vec3 result=diffuse(newNormal)*objColor+specular(newNormal);
-    gl_FragColor=vec4(result,1.);
+    gl_FragColor=vec4(result,.7);
 }
