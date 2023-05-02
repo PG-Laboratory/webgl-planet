@@ -23,6 +23,8 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
-        "useDefineForClassFields": true
+        "useDefineForClassFields": true,
+        "allowJs": true,
+        "checkJs": false
     }
 }

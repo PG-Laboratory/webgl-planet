@@ -31,6 +31,7 @@ export default {
         open: 'chrome',
     },
     buildOptions: {
-        /* ... */
+        metaUrlPath: 'snowpack',
+        baseUrl: './',
     },
 };
