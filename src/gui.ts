@@ -19,7 +19,7 @@ export class GUI {
   controls: Control[] = [];
 
   constructor() {
-    this.initConfigToggles();
+    this.initConfigControls();
     this.initPresetList();
   }
 
@@ -40,7 +40,7 @@ export class GUI {
     }
   }
 
-  private initConfigToggles() {
+  private initConfigControls() {
     for (const [categoryName, categoryValues] of Object.entries(activeConfig)) {
       const containerId = categoryName + '-settings';
       const container = document.getElementById(containerId);
@@ -49,7 +49,7 @@ export class GUI {
         continue;
       }
       for (let [key, value] of Object.entries(categoryValues)) {
-        // @ts-ignore can't be bothered to figure out the types for this right now
+        // @ts-ignore can't be bothered to fix this properly right now
         const metaData: ConfigMetaValueType = configMetaData[categoryName][key];
 
         if (metaData instanceof ConfigBoolValMeta) {
