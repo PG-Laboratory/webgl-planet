@@ -5,7 +5,7 @@ import {
   UniformsLib,
   UniformsUtils,
   Vector2
-} from "../../_snowpack/pkg/three.js";
+} from "../../snowpack/pkg/three.js";
 import frag from "./waterFrag.js";
 import vert from "./waterVert.js";
 export class Water {

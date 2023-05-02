@@ -4,7 +4,7 @@ import {
   Mesh,
   ShaderMaterial,
   Vector2
-} from "../../_snowpack/pkg/three.js";
+} from "../../snowpack/pkg/three.js";
 import starsFrag from "./starsFrag.js";
 import starsVert from "./starsVert.js";
 export class Sky {

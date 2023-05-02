@@ -1,4 +1,4 @@
-import {merge} from "../_snowpack/pkg/lodash.js";
+import {merge} from "../snowpack/pkg/lodash.js";
 const defaultConfig = {
   terrain: {
     offsetScale: 0.04,

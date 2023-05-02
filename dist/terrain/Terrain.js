@@ -5,7 +5,7 @@ import {
   UniformsLib,
   UniformsUtils,
   Vector2
-} from "../../_snowpack/pkg/three.js";
+} from "../../snowpack/pkg/three.js";
 import vert from "./terrainVert.js";
 import frag from "./terrainFrag.js";
 import {activeConfig} from "../config.js";

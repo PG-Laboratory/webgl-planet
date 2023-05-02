@@ -6,7 +6,7 @@ import {
   UniformsLib,
   UniformsUtils,
   Vector2
-} from "../../_snowpack/pkg/three.js";
+} from "../../snowpack/pkg/three.js";
 import frag from "./atmosphereFrag.js";
 import vert from "./atmosphereVert.js";
 import {activeConfig} from "../config.js";

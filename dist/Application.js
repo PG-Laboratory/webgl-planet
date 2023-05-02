@@ -4,8 +4,8 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer
-} from "../_snowpack/pkg/three.js";
-import {OrbitControls} from "../_snowpack/pkg/three/examples/jsm/controls/OrbitControls.js";
+} from "../snowpack/pkg/three.js";
+import {OrbitControls} from "../snowpack/pkg/three/examples/jsm/controls/OrbitControls.js";
 export class Application {
   constructor() {
     this.objects = [];

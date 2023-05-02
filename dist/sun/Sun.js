@@ -1,8 +1,8 @@
-import {TextureLoader} from "../../_snowpack/pkg/three.js";
+import {TextureLoader} from "../../snowpack/pkg/three.js";
 import {
   Lensflare,
   LensflareElement
-} from "../../_snowpack/pkg/three/examples/jsm/objects/Lensflare.js";
+} from "../../snowpack/pkg/three/examples/jsm/objects/Lensflare.js";
 export class Sun {
   constructor() {
     const textureLoader = new TextureLoader();
