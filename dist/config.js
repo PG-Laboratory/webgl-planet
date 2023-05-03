@@ -1,11 +1,14 @@
 import {merge} from "../snowpack/pkg/lodash.js";
 const defaultConfig = {
   terrain: {
-    offsetScale: 0.04,
+    offsetScale: 0.3,
     numOctaves: 8,
+    lacunarity: 2,
+    persistance: 0.5,
     baseFreq: 1.2,
-    useExponentiation: true,
-    wireframe: false
+    exponent: 3,
+    wireframe: false,
+    absInvert: false
   },
   atmosphere: {
     opacity: 0.2,
@@ -13,7 +16,14 @@ const defaultConfig = {
     color: "#eeeeee"
   },
   clouds: {
-    opacity: 1
+    opacity: 1,
+    height: 1.1
+  },
+  water: {
+    height: 1.035
+  },
+  camera: {
+    autoRotate: false
   }
 };
 export class ConfigIntValMeta {
@@ -42,11 +52,14 @@ export class ConfigColorValMeta {
 }
 export const configMetaData = {
   terrain: {
-    offsetScale: new ConfigFloatValMeta(1e-3, 0.3, "Offset scale"),
+    offsetScale: new ConfigFloatValMeta(1e-3, 1, "Offset scale"),
     numOctaves: new ConfigIntValMeta(1, 10, "Number of octaves"),
+    lacunarity: new ConfigFloatValMeta(1.1, 3, "Lacunarity"),
+    persistance: new ConfigFloatValMeta(0.1, 0.7, "Persistance"),
     baseFreq: new ConfigFloatValMeta(0.5, 4, "Fundamental frequency"),
-    useExponentiation: new ConfigBoolValMeta("Use exponentiation"),
-    wireframe: new ConfigBoolValMeta("Wireframe")
+    exponent: new ConfigFloatValMeta(0.01, 5, "Exponent"),
+    wireframe: new ConfigBoolValMeta("Wireframe"),
+    absInvert: new ConfigBoolValMeta("Abs invert")
   },
   atmosphere: {
     wireframe: new ConfigBoolValMeta("Wireframe"),
@@ -54,7 +67,14 @@ export const configMetaData = {
     color: new ConfigColorValMeta("Color")
   },
   clouds: {
-    opacity: new ConfigFloatValMeta(0, 1, "Opacity")
+    opacity: new ConfigFloatValMeta(0, 1, "Opacity"),
+    height: new ConfigFloatValMeta(0.9, 1.3, "Height")
+  },
+  water: {
+    height: new ConfigFloatValMeta(0.98, 1.1, "Height")
+  },
+  camera: {
+    autoRotate: new ConfigBoolValMeta("Auto-rotate")
   }
 };
 function cloneConfig(config) {
@@ -70,7 +90,6 @@ presets.set("Water debug", {
   terrain: {
     offsetScale: 0,
     numOctaves: 1,
-    useExponentiation: true,
     wireframe: false
   },
   atmosphere: {

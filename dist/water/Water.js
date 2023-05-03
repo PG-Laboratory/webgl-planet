@@ -1,3 +1,4 @@
+import {activeConfig} from "../config.js";
 import {
   IcosahedronGeometry,
   Mesh,
@@ -25,10 +26,11 @@ export class Water {
       opacity: 0.5,
       lights: true
     });
-    const geometry = new IcosahedronGeometry(1.035, 20);
+    const geometry = new IcosahedronGeometry(1, 20);
     this.object3D = new Mesh(geometry, this.material);
   }
   update(time) {
-    this.material.uniforms.time.value = time;
+    this.material.uniforms.time.value = activeConfig.water.height;
+    this.object3D.scale.set(activeConfig.water.height, activeConfig.water.height, activeConfig.water.height);
   }
 }

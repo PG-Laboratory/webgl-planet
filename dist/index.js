@@ -20,5 +20,5 @@ application.addSceneObject(clouds);
 application.addSceneObject(atmosphere);
 application.addSceneObject(sun);
 application.start();
-document.getElementsByClassName("loading-screen")[0].style.opacity = 0;
-const gui = new GUI();
+document.getElementsByClassName("loading-screen")[0].style.opacity = "0";
+new GUI();
