@@ -1,5 +1,6 @@
 uniform float time;
 uniform vec2 resolution;
+uniform float waterHeight;
 
 in vec3 outNormal;
 in vec3 localPos;
@@ -50,6 +51,9 @@ vec3 multiStopGradient(float samplePos,float stopPos[N_GRAD_STOPS],vec3 stopColo
 
 vec3 terrainTexture(){
     float stopPos[N_GRAD_STOPS]=float[](0.,.035,.045,.055,.060,.07,.08,1.);
+    for(int i=0;i<N_GRAD_STOPS;++i){
+        stopPos[i]+=(waterHeight-1.)-.035;
+    }
     vec3 stopColor[N_GRAD_STOPS]=vec3[](sandColor,sandColor,objColor,objColor,mountainColor,mountainColor,snowColor,snowColor);
     
     return multiStopGradient(radialOffset,stopPos,stopColor);
