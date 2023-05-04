@@ -51,15 +51,18 @@ vec3 multiStopGradient(float samplePos,float stopPos[N_GRAD_STOPS],vec3 stopColo
 
 vec3 terrainTexture(){
     float stopPos[N_GRAD_STOPS]=float[](0.,.035,.045,.055,.060,.07,.08,1.);
-    for(int i=0;i<N_GRAD_STOPS;++i){
+    for(int i=1;i<N_GRAD_STOPS;++i){
         stopPos[i]+=(waterHeight-1.)-.035;
     }
     vec3 stopColor[N_GRAD_STOPS]=vec3[](sandColor,sandColor,landColor,landColor,mountainColor,mountainColor,snowColor,snowColor);
     
-    return multiStopGradient(radialOffset,stopPos,stopColor);
+    vec3 result=multiStopGradient(radialOffset,stopPos,stopColor);
     
-    // float radialOffsetWithNoise = radialOffset + 0.005 * snoise(10.0 * localPos);
-    // return multiStopGradient(radialOffsetWithNoise, stopPos, stopColor);
+    // Attenuate result if under water, to crudely emulate light falloff
+    if(waterHeight>1.01)
+    result*=mix(smoothstep(waterHeight-1.-.015,waterHeight-1.,radialOffset),1.,.3);
+    
+    return result;
 }
 
 void main(){
