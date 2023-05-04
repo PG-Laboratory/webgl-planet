@@ -1,30 +1,16 @@
 uniform float time;
 uniform vec2 resolution;
+uniform float wavesIntensity;
+uniform float wavesSize;
+uniform float wavesSpeed;
+uniform bool useTrochoidalWaves;
 
 out vec3 outNormal;
-// out float radialOffset;
 out vec3 vertPos;
 out vec3 vertWorldPos;
 
 #pragma glslify:snoise=require(./../commonShader/noise3D)
 
-// float sampleHeight(vec3 pos) {
-    //   float heightOffset = 0.0;
-    //   float amp = 1.0;
-    //   float freq = baseFreq;
-    //   for(int i = 0; i < numOctaves; ++i) {
-        //     heightOffset += amp * snoise(freq * pos);
-        //     amp *= 0.5;
-        //     freq *= 2.0;
-    //   }
-    //   return heightOffsetScale * ((useExponentiation) ? exp(heightOffset) : heightOffset);
-    //   // return heightOffsetScale * exp(heightOffset);
-// }
-
-// Trochoidal waves for sphere based on
-// "Real-Time Rendering of Procedurally Generated Planets"
-// By Florian Michelic
-// https://cescg.org/wp-content/uploads/2018/04/Michelic-Real-Time-Rendering-of-Procedurally-Generated-Planets-2.pdf
 vec3 _trochoidalPosiSumTerm(vec3 v,float A,float omega,float l,float phi,float Q,vec3 d){
     return v*A*sin(omega*l+phi*time)+Q*A*cos(omega*l+phi*time)*d;
 }
@@ -34,32 +20,71 @@ vec3 _trochoidalNormSumTerm(vec3 v,float A,float omega,float l,float phi,float Q
     vec3 term2=-d*A*omega*cos(omega*l+phi*time);
     return term1+term2;
 }
+
+// Trochoidal waves for sphere based on
+// "Real-Time Rendering of Procedurally Generated Planets"
+// By Florian Michelic
+// https://cescg.org/wp-content/uploads/2018/04/Michelic-Real-Time-Rendering-of-Procedurally-Generated-Planets-2.pdf
 vec3 trochoidalWaves(vec3 position,out vec3 normal){
     float r=1.;// Radius of sphere
     vec3 v=normalize(position);
-    vec3 o=vec3(0.,1.,0.);
-    vec3 d=cross(v,cross((v-o),v));
-    float l=acos(dot(v,o))*r;
+    vec3 o;// waves origin
+    vec3 d;
+    float l,Q;
     
     vec3 Ps=v*r;
     vec3 ns=v;
     
-    Ps+=_trochoidalPosiSumTerm(v,.002,120.,l,1.,.5,d);
-    ns+=_trochoidalNormSumTerm(v,.002,120.,l,1.,.5,d);
+    o=-normalize(vec3(0.,1.,0.));
+    d=cross(v,cross((v-o),v));
+    l=acos(dot(v,o))*r;
+    // Q = 0.9 * smoothstep(0.1, 0.11, 1.0 - abs(dot(v, o)));
+    Q=.7;
+    Ps+=_trochoidalPosiSumTerm(v,wavesIntensity,wavesSize,l,wavesSpeed,Q,d);
+    ns+=_trochoidalNormSumTerm(v,wavesIntensity,wavesSize,l,wavesSpeed,Q,d);
     
-    Ps+=_trochoidalPosiSumTerm(v,.002,120.,l,1.,.5,d);
-    ns+=_trochoidalNormSumTerm(v,.002,120.,l,1.,.5,d);
+    o=-normalize(vec3(.13,1.,.25));
+    d=cross(v,cross((v-o),v));
+    l=acos(dot(v,o))*r;
+    // Q = 0.9 * smoothstep(0.1, 0.11, 1.0 - abs(dot(v, o)));
+    Q=.97;
+    Ps+=_trochoidalPosiSumTerm(v,wavesIntensity,.5*wavesSize,l,wavesSpeed,Q,d);
+    ns+=_trochoidalNormSumTerm(v,wavesIntensity,.5*wavesSize,l,wavesSpeed,Q,d);
+    
+    o=-normalize(vec3(.23,1.,.01));
+    d=cross(v,cross((v-o),v));
+    l=acos(dot(v,o))*r;
+    // Q = 0.9 * smoothstep(0.1, 0.11, 1.0 - abs(dot(v, o)));
+    Q=.57;
+    Ps+=_trochoidalPosiSumTerm(v,.9*wavesIntensity,.7*wavesSize,l,1.3*wavesSpeed,Q,d);
+    ns+=_trochoidalNormSumTerm(v,.9*wavesIntensity,.7*wavesSize,l,1.3*wavesSpeed,Q,d);
+    
+    o=-normalize(vec3(0.,1.,0.));
+    d=cross(v,cross((v-o),v));
+    l=acos(dot(v,o))*r;
+    // Q = 0.9 * smoothstep(0.1, 0.11, 1.0 - abs(dot(v, o)));
+    Q=.7;
+    Ps+=_trochoidalPosiSumTerm(v,wavesIntensity,wavesSize,l,1.64*wavesSpeed,Q,d);
+    ns+=_trochoidalNormSumTerm(v,wavesIntensity,wavesSize,l,1.64*wavesSpeed,Q,d);
     
     normal=ns;
     return Ps;
 }
 
 void main(){
-    vec3 newNormal;
-    vec3 newPos=trochoidalWaves(position,newNormal);
+    if(useTrochoidalWaves){
+        vec3 newNormal;
+        vec3 newPos=trochoidalWaves(position,newNormal);
+        
+        outNormal=normalMatrix*newNormal;
+        vertPos=vec3(modelViewMatrix*vec4(newPos,1.));
+        vertWorldPos=vec3(modelMatrix*vec4(newPos,1.));
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(newPos,1.);
+    }else{
+        outNormal=normalMatrix*normal;
+        vertPos=vec3(modelViewMatrix*vec4(position,1.));
+        vertWorldPos=vec3(modelMatrix*vec4(position,1.));
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);
+    }
     
-    outNormal=normalMatrix*newNormal;
-    vertPos=vec3(modelViewMatrix*vec4(newPos,1.));
-    vertWorldPos=vec3(modelMatrix*vec4(newPos,1.));
-    gl_Position=projectionMatrix*modelViewMatrix*vec4(newPos,1.);
 }
