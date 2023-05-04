@@ -6,6 +6,19 @@ import {GUI} from "./gui.js";
 import {Clouds} from "./clouds/Clouds.js";
 import {Atmosphere} from "./atmosphere/Atmosphere.js";
 import {Sun} from "./sun/Sun.js";
+import {activeConfig, configAsJSON, presets, loadPreset} from "./config.js";
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const presetStr = urlParams.get("preset");
+if (presetStr) {
+  const preset = presets.get(presetStr);
+  if (preset)
+    loadPreset(preset);
+}
+if (urlParams.has("nogui")) {
+  document.getElementById("side-panel-container").style.display = "none";
+  activeConfig.camera.autoRotate = true;
+}
 const sky = new Sky();
 const terrain = new Terrain();
 const water = new Water();
@@ -20,5 +33,6 @@ application.addSceneObject(clouds);
 application.addSceneObject(atmosphere);
 application.addSceneObject(sun);
 application.start();
-document.getElementsByClassName("loading-screen")[0].style.opacity = "0";
 new GUI();
+window.configAsJSON = configAsJSON;
+document.getElementsByClassName("loading-screen")[0].style.opacity = "0";

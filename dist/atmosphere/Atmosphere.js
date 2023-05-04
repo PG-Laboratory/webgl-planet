@@ -19,7 +19,8 @@ export class Atmosphere {
           time: {value: 0},
           resolution: {value: new Vector2()},
           opacity: {value: 0},
-          color: {value: new Color()}
+          color: {value: new Color()},
+          fresnel: {value: 1}
         }
       ]),
       vertexShader: vert,
@@ -36,5 +37,6 @@ export class Atmosphere {
     this.material.uniforms.color.value.set(activeConfig.atmosphere.color);
     this.material.uniforms.opacity.value = activeConfig.atmosphere.opacity;
     this.material.wireframe = activeConfig.atmosphere.wireframe;
+    this.material.uniforms.fresnel.value = activeConfig.atmosphere.fresnel;
   }
 }
