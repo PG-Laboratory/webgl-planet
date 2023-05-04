@@ -6,6 +6,7 @@ import { GUI } from './gui';
 import { Clouds } from './clouds/Clouds';
 import { Atmosphere } from './atmosphere/Atmosphere';
 import { Sun } from './sun/Sun';
+import { configAsJSON } from './config';
 
 const sky = new Sky();
 const terrain = new Terrain();
@@ -28,3 +29,6 @@ application.start();
 ).style.opacity = '0';
 
 new GUI();
+
+// Just as a convenience for me
+(window as any).configAsJSON = configAsJSON;

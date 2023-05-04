@@ -1,4 +1,5 @@
 import {
+  Color,
   IcosahedronGeometry,
   Mesh,
   ShaderMaterial,
@@ -30,6 +31,10 @@ export class Terrain implements SceneObject {
           persistance: { value: activeConfig.terrain.persistance },
           absInvert: { value: activeConfig.terrain.absInvert },
           waterHeight: { value: activeConfig.water.height },
+          landColor: { value: new Color() },
+          sandColor: { value: new Color() },
+          snowColor: { value: new Color() },
+          mountainColor: { value: new Color() },
         },
       ]),
       vertexShader: vert,
@@ -52,5 +57,12 @@ export class Terrain implements SceneObject {
     this.material.uniforms.absInvert.value = activeConfig.terrain.absInvert;
     this.material.uniforms.waterHeight.value = activeConfig.water.height;
     this.material.wireframe = activeConfig.terrain.wireframe;
+
+    this.material.uniforms.landColor.value.set(activeConfig.terrain.landColor);
+    this.material.uniforms.sandColor.value.set(activeConfig.terrain.sandColor);
+    this.material.uniforms.snowColor.value.set(activeConfig.terrain.snowColor);
+    this.material.uniforms.mountainColor.value.set(
+      activeConfig.terrain.mountainColor,
+    );
   }
 }
