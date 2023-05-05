@@ -21,8 +21,11 @@ const defaultConfig = {
     color: "#1f75ff"
   },
   clouds: {
+    amount: 0.5,
     opacity: 1,
-    height: 1.1
+    height: 1.1,
+    smoothness: 0.5,
+    warp: 0.13
   },
   water: {
     height: 1.035,
@@ -85,7 +88,10 @@ export const configMetaData = {
   },
   clouds: {
     opacity: new ConfigFloatValMeta(0, 1, "Opacity"),
-    height: new ConfigFloatValMeta(0.9, 1.3, "Height")
+    amount: new ConfigFloatValMeta(0, 1, "Amount"),
+    height: new ConfigFloatValMeta(0.9, 1.3, "Height"),
+    smoothness: new ConfigFloatValMeta(0, 1, "Smoothness"),
+    warp: new ConfigFloatValMeta(0, 1, "Warp")
   },
   water: {
     height: new ConfigFloatValMeta(0.98, 1.1, "Water level"),
