@@ -14,6 +14,10 @@ out vec3 localPos;
 
 #pragma glslify:snoise=require(./../commonShader/noise3D)
 
+float smoothAbs(float x,float k){
+    return x*exp(k*x)/(exp(k*x)+exp(-k*x))-x*exp(-k*x)/(exp(k*x)+exp(-k*x));
+}
+
 float sampleHeight(vec3 pos){
     float heightOffset=0.;
     float amp=1.;
@@ -21,7 +25,7 @@ float sampleHeight(vec3 pos){
     float normalizeFactor=0.;
     for(int i=0;i<numOctaves;++i){
         if(absInvert){
-            heightOffset+=amp*(1.-abs(snoise(freq*pos)));
+            heightOffset+=amp*(1.-smoothAbs(snoise(freq*pos),10.));
         }else{
             float noise=.5+.5*snoise(freq*pos);
             heightOffset+=amp*noise;
