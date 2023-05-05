@@ -9,6 +9,7 @@ import { Sun } from './sun/Sun';
 import { activeConfig, configAsJSON, presets, loadPreset } from './config';
 
 // So I can use in iframes in presentation
+// and to help when developing
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const presetStr = urlParams.get('preset');
@@ -43,6 +44,15 @@ new GUI();
 
 // Just as a convenience for me
 (window as any).configAsJSON = configAsJSON;
+
+// Hide scrolling reminder if at bottom
+const sidePanel = document.getElementById('side-panel-container')!;
+sidePanel.onscroll = () => {
+  const scrollReminder = document.getElementById('scroll-reminder')!;
+  const isAtBottom =
+    sidePanel.scrollTop === sidePanel.scrollHeight - sidePanel.clientHeight;
+  scrollReminder.style.opacity = isAtBottom ? '0' : '1';
+};
 
 // Remove loading screen
 (
